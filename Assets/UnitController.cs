@@ -8,6 +8,8 @@ public class UnitController : MonoBehaviour
 {
     public NavMeshAgent agent;
     public float timer = 0.0f;
+
+    [Range(0.0f, 25.0f)]
     public float memoryLength = 10.0f;
     public float memoryLengthUsage;
     public GameObject sensoryRangeDisplay;
@@ -25,9 +27,14 @@ public class UnitController : MonoBehaviour
 
     // Start is called before the first frame update
     public float energy = 100.0f;
+
+    [Range(0.0f, 25.0f)]
     public float speed = 3.0f;
+    [Range(0.0f, 25.0f)]
     public float acceleration = 3.0f;
+    [Range(0.0f, 25.0f)]
     public float turnspeed = 3.0f;
+    [Range(0.0f, 50.0f)]
     public float sensoryRange = 10.0f;
     
 
@@ -38,8 +45,8 @@ public class UnitController : MonoBehaviour
     public Vector3 targetDestination;
     public Vector3 foodTarget;
 
-
-    float consumptionrate = 1.0f;
+    [Range(0.0f, 5.0f)]
+    float metabolicRate = 1.0f;
 
 
     void Start()
@@ -51,7 +58,7 @@ public class UnitController : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        energy -= (Time.deltaTime * consumptionrate);
+        energy -= (Time.deltaTime * metabolicRate);
 
         if(memoryLengthUsage <= 0)
         {
