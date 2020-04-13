@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Linq;
 
 public class UnitController : MonoBehaviour
 {
     public NavMeshAgent agent;
     public float timer = 0.0f;
+    public float memoryLength = 10.0f;
+    public float memoryLengthUsage;
+    public GameObject sensoryRangeDisplay;
+    public bool mouthOpen = false;
 
 
     [SerializeField]
@@ -24,10 +29,15 @@ public class UnitController : MonoBehaviour
     public float acceleration = 3.0f;
     public float turnspeed = 3.0f;
     public float sensoryRange = 10.0f;
+    
 
-    public Collider[] hitColliders;
+    public Collider[] detectedObjects;
+
+    public List<GameObject> detectedFoodObjects = new List<GameObject>();
 
     public Vector3 targetDestination;
+    public Vector3 foodTarget;
+
 
     float consumptionrate = 1.0f;
 
@@ -42,6 +52,22 @@ public class UnitController : MonoBehaviour
     {
         timer += Time.deltaTime;
         energy -= (Time.deltaTime * consumptionrate);
+
+        if(memoryLengthUsage <= 0)
+        {
+            memoryLengthUsage = memoryLength;
+        }
+        else
+        {
+            memoryLengthUsage -= Time.deltaTime;
+        }
+
+        //set scale /2
+        sensoryRangeDisplay.transform.localScale = new Vector3((sensoryRange * 2), 0.001f, (sensoryRange * 2));
+
+        //detectedObjects = Physics.OverlapSphere(gameObject.transform.position, sensoryRange);
+
+
 
 
         // Set Navmesh Agent setting
@@ -59,13 +85,72 @@ public class UnitController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            targetDestination = new Vector3((Random.Range(-itemXSpread, itemXSpread)), (Random.Range(-itemYSpread, itemYSpread)), (Random.Range(-itemZSpread, itemZSpread)));
+            Wander();
         }
 
+        //perception check
         if (Input.GetKeyDown(KeyCode.W))
         {
-            hitColliders = Physics.OverlapSphere(gameObject.transform.position, sensoryRange);
+            detectedFoodObjects.Clear();
+            Debug.Log("Looking around for food");
+            detectedObjects = Physics.OverlapSphere(gameObject.transform.position, sensoryRange);
+
+            //% chance of what action I will take
+            //-----------------------------------------------
+
+            //if looking for food
+            //int i = 0;
+
+            mouthOpen = true;
+            foreach (Collider detectedObject in detectedObjects)
+                {
+                        if(detectedObject.tag == "Food")
+                        {
+                            detectedFoodObjects.Add(detectedObject.gameObject);
+                            detectedFoodObjects = detectedFoodObjects.OrderBy(x => Vector3.Distance(this.transform.position, x.transform.position)).ToList();
+                        }
+
+                }
+
+            //go to the food
+            if(detectedFoodObjects.Count != 0)
+            {
+                targetDestination = detectedFoodObjects[0].transform.position;
+            }
+            else
+            {
+                mouthOpen = false;
+                Wander();
+            }
+            //wander?
+
+
         }
 
+    }
+
+    private void Wander()
+    {
+        targetDestination = new Vector3((Random.Range(-itemXSpread, itemXSpread)), (Random.Range(-itemYSpread, itemYSpread)), (Random.Range(-itemZSpread, itemZSpread)));
+    }
+
+
+    private void OnTriggerEnter(Collider collisionobject)
+    {
+        Debug.Log(collisionobject);
+        if (collisionobject.tag == "Food")
+        {
+            if (mouthOpen == true)
+            {
+                Debug.Log("energy" + energy);
+                Debug.Log("energyContent" + collisionobject.gameObject.GetComponent<food>().energyContent);
+
+                energy += collisionobject.gameObject.GetComponent<food>().energyContent;
+                Destroy(collisionobject.gameObject);
+                mouthOpen = false;
+                //remeber this
+                Wander();
+            }
+        }
     }
 }
