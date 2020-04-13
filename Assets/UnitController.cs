@@ -1,16 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class UnitController : MonoBehaviour
 {
+    public NavMeshAgent agent;
     public float timer = 0.0f;
+
+
+    [SerializeField]
+    float itemXSpread = 30f;
+
+    [SerializeField]
+    float itemYSpread = 0;
+
+    [SerializeField]
+    float itemZSpread = 30f;
 
     // Start is called before the first frame update
     public float energy = 100.0f;
     public float speed = 3.0f;
     public float sensoryRange = 10.0f;
-
+    public Vector3 targetDestination;
 
     float consumptionrate = 1.0f;
 
@@ -32,5 +44,12 @@ public class UnitController : MonoBehaviour
             
             Destroy(gameObject);
         }
+        agent.SetDestination(targetDestination);
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            targetDestination = new Vector3((Random.Range(-itemXSpread, itemXSpread)), (Random.Range(-itemYSpread, itemYSpread)), (Random.Range(-itemZSpread, itemZSpread)));
+        }
+
     }
 }
