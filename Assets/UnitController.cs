@@ -142,7 +142,7 @@ public class UnitController : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider collisionobject)
+    private void OnTriggerStay(Collider collisionobject)
     {
         Debug.Log(collisionobject);
         if (collisionobject.tag == "Food")
