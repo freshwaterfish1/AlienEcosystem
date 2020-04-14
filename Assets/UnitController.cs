@@ -9,6 +9,9 @@ public class UnitController : MonoBehaviour
     public NavMeshAgent agent;
     public float timer = 0.0f;
 
+    public float distanceTraveled = 0.0f;
+    Vector3 lastPosition;
+
     [Range(0.0f, 25.0f)]
     public float memoryLength = 10.0f;
     public float memoryLengthUsage;
@@ -51,7 +54,7 @@ public class UnitController : MonoBehaviour
 
     void Start()
     {
-        
+        lastPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -60,7 +63,12 @@ public class UnitController : MonoBehaviour
         timer += Time.deltaTime;
         energy -= (Time.deltaTime * metabolicRate);
 
-        if(memoryLengthUsage <= 0)
+
+        distanceTraveled += Vector3.Distance(transform.position, lastPosition);
+        lastPosition = transform.position;
+
+
+        if (memoryLengthUsage <= 0)
         {
             memoryLengthUsage = memoryLength;
         }
@@ -70,7 +78,7 @@ public class UnitController : MonoBehaviour
         }
 
         //set scale /2
-        sensoryRangeDisplay.transform.localScale = new Vector3((sensoryRange * 2), 0.001f, (sensoryRange * 2));
+        sensoryRangeDisplay.transform.localScale = new Vector3((sensoryRange * 2), (sensoryRange * 2), 1);
 
         //detectedObjects = Physics.OverlapSphere(gameObject.transform.position, sensoryRange);
 
