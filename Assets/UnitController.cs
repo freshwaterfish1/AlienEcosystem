@@ -83,8 +83,9 @@ public class UnitController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        unitColor = new Color((speed / 25), (sensoryRange / 50), (energy / 100), 1.0f);
+        rend.material.SetColor("_Color", unitColor);
 
-        
 
         //rend.material.SetColor( "unitcolor", new Color(            ((speed / 25) * 100),            ((sensoryRange / 50) * 100),            ((energy / 100) * 100)));
 
@@ -190,9 +191,8 @@ public class UnitController : MonoBehaviour
     {
         GameObject childUnit = Instantiate(gameObject);
         childUnit.transform.parent = SpeciesHolder.transform;
-        Debug.Log("child speed was " + childUnit.gameObject.GetComponent<UnitController>().speed);
-        childUnit.gameObject.GetComponent<UnitController>().speed += 1;
-        Debug.Log("child speed is now " + childUnit.gameObject.GetComponent<UnitController>().speed);
+        childUnit.gameObject.GetComponent<UnitController>().sensoryRange += 1;
+    
 
         //Get Colored
         unitColor = new Color((speed / 25), (sensoryRange / 50), (energy / 100), 1.0f);
