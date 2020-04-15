@@ -70,13 +70,8 @@ public class UnitController : MonoBehaviour
         unitColor = new Color((speed / 25), (sensoryRange / 50), (energy / 100), 1.0f);
         rend.material.SetColor("_Color", unitColor);
 
-
-
-
         actionList.Add(Hunt);
         actionList.Add(Wander);
-
-
 
     }
 
@@ -143,7 +138,6 @@ public class UnitController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             Hunt();
-
         }
 
         if (Input.GetKeyDown(KeyCode.R))
