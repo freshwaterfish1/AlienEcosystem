@@ -43,6 +43,8 @@ public class UnitController : MonoBehaviour
     public float sensoryRange = 10.0f;
     [Range(0.0f, 5.0f)]
     public float metabolicRate = 1.0f;
+    
+    public float movementEfficiency = 0.0001f;
 
     public Collider[] detectedObjects;
     public float movementEfficiency = 0.001f;
