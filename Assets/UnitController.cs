@@ -57,11 +57,16 @@ public class UnitController : MonoBehaviour
     Renderer rend;
 
 
-
     void Start()
     {
+
         lastPosition = transform.position;
         rend = GetComponent<Renderer>();
+
+        unitColor = new Color((speed / 25), (sensoryRange / 50), (energy / 100), 1.0f);
+        rend.material.SetColor("_Color", unitColor);
+
+
 
 
         actionList.Add(Hunt);
@@ -70,6 +75,8 @@ public class UnitController : MonoBehaviour
 
 
     }
+
+
 
     // Update is called once per frame
     void Update()
@@ -128,10 +135,7 @@ public class UnitController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             Hunt();
-            unitColor = new Color (((speed / 25) * 100), ((sensoryRange / 50) * 100), ((energy / 100) * 100));
-            rend.material.SetColor("_Color", new Color(.2f, .2f, .2f) );
 
-            //rend.material.SetColor("_Color", unitColor);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -187,6 +191,10 @@ public class UnitController : MonoBehaviour
         Debug.Log("child speed was " + childUnit.gameObject.GetComponent<UnitController>().speed);
         childUnit.gameObject.GetComponent<UnitController>().speed += 1;
         Debug.Log("child speed is now " + childUnit.gameObject.GetComponent<UnitController>().speed);
+
+        //Get Colored
+        unitColor = new Color((speed / 25), (sensoryRange / 50), (energy / 100), 1.0f);
+        rend.material.SetColor("_Color", unitColor);
     }
 
 
