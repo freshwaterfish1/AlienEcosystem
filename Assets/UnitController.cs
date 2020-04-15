@@ -85,7 +85,7 @@ public class UnitController : MonoBehaviour
 
         distanceTraveled += Vector3.Distance(transform.position, lastPosition);
         lastPosition = transform.position;
-
+        energy -= distanceTraveled * movementEfficiency;
 
         if (memoryLengthUsage <= 0)
         {
