@@ -1,11 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
 
     public GameObject[] itemToSpawn;
+    public TextMeshProUGUI SpeciesAText;
+    public GameObject SpeciesAParent;
+
+    public TextMeshProUGUI SpeciesBText;
+    public GameObject SpeciesBParent;
+
+    public TextMeshProUGUI SpeciesCText;
+    public GameObject SpeciesCParent;
 
     [SerializeField]
     float itemXSpread = 30f;
@@ -27,6 +36,9 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        SpeciesAText.text = "Species A: " + SpeciesAParent.transform.childCount;
+        SpeciesBText.text = "Species B: " + SpeciesBParent.transform.childCount;
+        SpeciesCText.text = "Species C: " + SpeciesCParent.transform.childCount;
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -36,6 +48,8 @@ public class GameController : MonoBehaviour
             }
         }
     }
+    
+
 
 
     void SpreadItem()
