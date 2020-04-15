@@ -6,6 +6,8 @@ using System.Linq;
 
 public class UnitController : MonoBehaviour
 {
+
+    public GameObject SpeciesHolder;
     public NavMeshAgent agent;
     public float timer = 0.0f;
 
@@ -39,22 +41,29 @@ public class UnitController : MonoBehaviour
     public float turnspeed = 3.0f;
     [Range(0.0f, 50.0f)]
     public float sensoryRange = 10.0f;
-    
+    [Range(0.0f, 5.0f)]
+    public float metabolicRate = 1.0f;
 
     public Collider[] detectedObjects;
 
+
+    public List<System.Action> actionList = new List<System.Action>();
     public List<GameObject> detectedFoodObjects = new List<GameObject>();
 
     public Vector3 targetDestination;
     public Vector3 foodTarget;
 
-    [Range(0.0f, 5.0f)]
-    float metabolicRate = 1.0f;
+
+
 
 
     void Start()
     {
         lastPosition = transform.position;
+
+        actionList.Add(Hunt);
+        actionList.Add(Wander);
+
     }
 
     // Update is called once per frame
@@ -71,6 +80,8 @@ public class UnitController : MonoBehaviour
         if (memoryLengthUsage <= 0)
         {
             memoryLengthUsage = memoryLength;
+            NewAction();
+            Debug.Log("New Action");
         }
         else
         {
@@ -106,47 +117,62 @@ public class UnitController : MonoBehaviour
         //perception check
         if (Input.GetKeyDown(KeyCode.W))
         {
-            detectedFoodObjects.Clear();
-            Debug.Log("Looking around for food");
-            detectedObjects = Physics.OverlapSphere(gameObject.transform.position, sensoryRange);
+            Hunt();
+        }
 
-            //% chance of what action I will take
-            //-----------------------------------------------
-
-            //if looking for food
-            //int i = 0;
-
-            mouthOpen = true;
-            foreach (Collider detectedObject in detectedObjects)
-                {
-                        if(detectedObject.tag == "Food")
-                        {
-                            detectedFoodObjects.Add(detectedObject.gameObject);
-                            detectedFoodObjects = detectedFoodObjects.OrderBy(x => Vector3.Distance(this.transform.position, x.transform.position)).ToList();
-                        }
-
-                }
-
-            //go to the food
-            if(detectedFoodObjects.Count != 0)
-            {
-                targetDestination = detectedFoodObjects[0].transform.position;
-            }
-            else
-            {
-                mouthOpen = false;
-                Wander();
-            }
-            //wander?
-
-
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reproduce();
         }
 
     }
 
-    private void Wander()
+    private void NewAction()
     {
+        actionList[Random.Range(0, actionList.Count)]();
+    }
+
+     void Hunt()
+    {
+        detectedFoodObjects.Clear();
+        Debug.Log((this.gameObject.transform.name) + " is Hunting");
+        detectedObjects = Physics.OverlapSphere(gameObject.transform.position, sensoryRange);
+        mouthOpen = true;
+        foreach (Collider detectedObject in detectedObjects)
+        {
+            if (detectedObject.tag == "Food")
+            {
+                detectedFoodObjects.Add(detectedObject.gameObject);
+                detectedFoodObjects = detectedFoodObjects.OrderBy(x => Vector3.Distance(this.transform.position, x.transform.position)).ToList();
+            }
+
+        }
+
+        //go to the food
+        if (detectedFoodObjects.Count != 0)
+        {
+            targetDestination = detectedFoodObjects[0].transform.position;
+        }
+        else
+        {
+            mouthOpen = false;
+        }
+    }
+
+
+     void Wander()
+    {
+        Debug.Log((this.gameObject.transform.name) + " is Wandering");
         targetDestination = new Vector3((Random.Range(-itemXSpread, itemXSpread)), (Random.Range(-itemYSpread, itemYSpread)), (Random.Range(-itemZSpread, itemZSpread)));
+    }
+
+    void Reproduce()
+    {
+        GameObject childUnit = Instantiate(gameObject);
+        childUnit.transform.parent = SpeciesHolder.transform;
+        Debug.Log("child speed was " + childUnit.gameObject.GetComponent<UnitController>().speed);
+        childUnit.gameObject.GetComponent<UnitController>().speed += 1;
+        Debug.Log("child speed is now " + childUnit.gameObject.GetComponent<UnitController>().speed);
     }
 
 
