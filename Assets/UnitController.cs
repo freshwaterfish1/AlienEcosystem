@@ -45,7 +45,7 @@ public class UnitController : MonoBehaviour
     public float metabolicRate = 1.0f;
 
     public Collider[] detectedObjects;
-
+    public float movementEfficiency = 0.001f;
 
     public List<System.Action> actionList = new List<System.Action>();
     public List<GameObject> detectedFoodObjects = new List<GameObject>();
