@@ -52,23 +52,33 @@ public class UnitController : MonoBehaviour
 
     public Vector3 targetDestination;
     public Vector3 foodTarget;
+    public Color unitColor;
 
-
+    Renderer rend;
 
 
 
     void Start()
     {
         lastPosition = transform.position;
+        rend = GetComponent<Renderer>();
+
 
         actionList.Add(Hunt);
         actionList.Add(Wander);
+
+
 
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        
+
+        //rend.material.SetColor( "unitcolor", new Color(            ((speed / 25) * 100),            ((sensoryRange / 50) * 100),            ((energy / 100) * 100)));
+
         timer += Time.deltaTime;
         energy -= (Time.deltaTime * metabolicRate);
 
@@ -118,6 +128,10 @@ public class UnitController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             Hunt();
+            unitColor = new Color (((speed / 25) * 100), ((sensoryRange / 50) * 100), ((energy / 100) * 100));
+            rend.material.SetColor("_Color", new Color(.2f, .2f, .2f) );
+
+            //rend.material.SetColor("_Color", unitColor);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
