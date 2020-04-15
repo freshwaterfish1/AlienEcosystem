@@ -46,6 +46,8 @@ public class UnitController : MonoBehaviour
     
     public float movementEfficiency = 0.0001f;
 
+    public float reproductionChance = 0.0f; //reproduction chance each frame
+
     public Collider[] detectedObjects;
 
 
@@ -92,10 +94,13 @@ public class UnitController : MonoBehaviour
         timer += Time.deltaTime;
         energy -= (Time.deltaTime * metabolicRate);
 
-
+        //refresh information about the cell
         distanceTraveled += Vector3.Distance(transform.position, lastPosition);
         lastPosition = transform.position;
         energy -= distanceTraveled * movementEfficiency;
+        reproductionChance += (Time.deltaTime)*((energy - 50) / 50); //scales delta in reproduction chance from -1 to 1 assuming max energy is 100, time constant applied to slow the accumulation of this value
+            Mathf.Clamp(reproductionChance, 0.0f, 1.0f);
+
 
         if (memoryLengthUsage <= 0)
         {
