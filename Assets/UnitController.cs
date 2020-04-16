@@ -47,6 +47,8 @@ public class UnitController : MonoBehaviour
     public float movementEfficiency = 0.0001f;
 
     public float reproductionChance = 0.0f; //reproduction chance each frame
+    public float reproductionCooldown = 1.0f;
+    public float reproductionTimer;
 
     public Collider[] detectedObjects;
 
@@ -87,15 +89,30 @@ public class UnitController : MonoBehaviour
         //rend.material.SetColor( "unitcolor", new Color(            ((speed / 25) * 100),            ((sensoryRange / 50) * 100),            ((energy / 100) * 100)));
 
         timer += Time.deltaTime;
-        energy -= (Time.deltaTime * metabolicRate);
 
-        //refresh information about the cell
+
+        //energy consumption
+        energy -= (Time.deltaTime * metabolicRate);
         distanceTraveled += Vector3.Distance(transform.position, lastPosition);
         lastPosition = transform.position;
         energy -= distanceTraveled * movementEfficiency;
-        reproductionChance += (Time.deltaTime)*((energy - 50) / 50); //scales delta in reproduction chance from -1 to 1 assuming max energy is 100, time constant applied to slow the accumulation of this value
-            Mathf.Clamp(reproductionChance, 0.0f, 1.0f);
 
+        //reproduction logic: Update reproduction chance and determine if cell will reproduce
+       
+        if (reproductionTimer >= reproductionCooldown)
+        {
+            reproductionTimer=0.0f;
+            reproductionChance += ((energy - 50) / 1000);
+            reproductionChance = Mathf.Clamp(reproductionChance, 0.0f, 1.0f);
+            if (Random.Range(0.0f, 1.0f) < reproductionChance)
+            {
+                Reproduce();
+            }
+        }
+        else
+        {
+            reproductionTimer += Time.deltaTime;
+        }
 
         if (memoryLengthUsage <= 0)
         {
@@ -142,7 +159,7 @@ public class UnitController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Reproduce();
+            
         }
 
     }
@@ -190,7 +207,9 @@ public class UnitController : MonoBehaviour
     {
         GameObject childUnit = Instantiate(gameObject);
         childUnit.transform.parent = SpeciesHolder.transform;
-        childUnit.gameObject.GetComponent<UnitController>().sensoryRange += 1;
+        childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange;
+        childUnit.gameObject.GetComponent<UnitController>().energy = energy * 0.5f;
+        energy = energy * 0.5f;
     
 
         //Get Colored
