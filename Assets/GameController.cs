@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour
     public GameObject[] itemToSpawn;
     public TextMeshProUGUI SpeciesAText;
     public GameObject SpeciesAParent;
+    public GameObject GeneticsMenu;
+    public bool isMenuActive = false;
 
     public TextMeshProUGUI SpeciesBText;
     public GameObject SpeciesBParent;
@@ -47,10 +49,29 @@ public class GameController : MonoBehaviour
                 SpreadItem();
             }
         }
+
+        GeneticsMenu.SetActive(isMenuActive);
+        SpeciesAParent.SetActive(!isMenuActive);
+        SpeciesBParent.SetActive(!isMenuActive);
+        SpeciesCParent.SetActive(!isMenuActive);
+
+        /*
+        if(isMenuActive == true)
+        {
+            GeneticsMenu.SetActive(true);
+        }
+        else
+        {
+            GeneticsMenu.SetActive(false);
+        }
+        */
     }
     
 
-
+    public void ToggleMenu()
+    {
+        isMenuActive = !isMenuActive;
+    }
 
     void SpreadItem()
     {
