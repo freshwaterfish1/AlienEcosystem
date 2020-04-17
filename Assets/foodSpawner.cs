@@ -27,7 +27,7 @@ public class foodSpawner : MonoBehaviour
             Vector3 pos = RandomCircle(gameObject.transform.position, spawnRadius);
 
             Instantiate(food, pos, Quaternion.identity, foodParent.transform);
-            Debug.Log("New Action");
+            //Debug.Log("New Action");
         }
         else
         {

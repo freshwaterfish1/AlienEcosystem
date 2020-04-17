@@ -59,6 +59,7 @@ public class UnitController : MonoBehaviour
     public Vector3 targetDestination;
     public Vector3 foodTarget;
     public Color unitColor;
+    public int generationCount;
 
     Renderer rend;
 
@@ -118,7 +119,7 @@ public class UnitController : MonoBehaviour
         {
             memoryLengthUsage = memoryLength;
             NewAction();
-            Debug.Log("New Action");
+            //Debug.Log("New Action");
         }
         else
         {
@@ -137,14 +138,15 @@ public class UnitController : MonoBehaviour
         agent.speed = speed;
         agent.angularSpeed = turnspeed;
         agent.acceleration = acceleration;
-
+        agent.SetDestination(targetDestination);
         if (energy <= 0)
         {
-            Debug.Log(gameObject + ("has died"));
+            //Debug.Log(gameObject + ("has died"));
             
             Destroy(gameObject);
         }
-        agent.SetDestination(targetDestination);
+
+
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -166,13 +168,15 @@ public class UnitController : MonoBehaviour
 
     private void NewAction()
     {
-        actionList[Random.Range(0, actionList.Count)]();
+        Hunt();
+
+        //actionList[Random.Range(0, actionList.Count)]();
     }
 
      void Hunt()
     {
         detectedFoodObjects.Clear();
-        Debug.Log((this.gameObject.transform.name) + " is Hunting");
+        //Debug.Log((this.gameObject.transform.name) + " is Hunting");
         detectedObjects = Physics.OverlapSphere(gameObject.transform.position, sensoryRange);
         mouthOpen = true;
         foreach (Collider detectedObject in detectedObjects)
@@ -199,17 +203,29 @@ public class UnitController : MonoBehaviour
 
      void Wander()
     {
-        Debug.Log((this.gameObject.transform.name) + " is Wandering");
+        //Debug.Log((this.gameObject.transform.name) + " is Wandering");
         targetDestination = new Vector3((Random.Range(-itemXSpread, itemXSpread)), (Random.Range(-itemYSpread, itemYSpread)), (Random.Range(-itemZSpread, itemZSpread)));
     }
 
     void Reproduce()
     {
-        GameObject childUnit = Instantiate(gameObject);
-        childUnit.transform.parent = SpeciesHolder.transform;
-        childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange;
-        childUnit.gameObject.GetComponent<UnitController>().energy = energy * 0.5f;
         energy = energy * 0.5f;
+        GameObject childUnit = Instantiate(gameObject);
+
+        //Stops and resets the navmesh agent - ought to fix some bugs.
+        
+        childUnit.gameObject.GetComponent<UnitController>().agent.isStopped = true;
+        childUnit.gameObject.GetComponent<UnitController>().agent.ResetPath();
+        
+
+        childUnit.transform.parent = SpeciesHolder.transform;
+        childUnit.gameObject.GetComponent<UnitController>().generationCount += 1;
+        childUnit.gameObject.name = ("Unit Generation " + childUnit.gameObject.GetComponent<UnitController>().generationCount);
+
+        childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange;
+
+        //childUnit.gameObject.GetComponent<UnitController>().energy = energy * 0.5f;
+        
     
 
         //Get Colored
@@ -239,19 +255,20 @@ public class UnitController : MonoBehaviour
 
         private void OnTriggerStay(Collider collisionobject)
     {
-        Debug.Log(collisionobject);
+        //Debug.Log(collisionobject);
         if (collisionobject.tag == "Food")
         {
             if (mouthOpen == true)
             {
-                Debug.Log("energy" + energy);
-                Debug.Log("energyContent" + collisionobject.gameObject.GetComponent<food>().energyContent);
+                //Debug.Log("energy" + energy);
+                //Debug.Log("energyContent" + collisionobject.gameObject.GetComponent<food>().energyContent);
 
                 energy += collisionobject.gameObject.GetComponent<food>().energyContent;
                 Destroy(collisionobject.gameObject);
                 mouthOpen = false;
                 //remeber this
-                Wander();
+                //Wander();
+                Hunt();
             }
         }
     }
