@@ -59,6 +59,8 @@ public class UnitController : MonoBehaviour
     public float reproductionCooldown = 2.0f;
     public float reproductionTimer;
 
+    public float decisivness = 1.0f; //the great this is, the more likely a cell is to go for further food
+    public float distanceChoice = 0.0f; //more likely to go for nth food.
 
 
     public Collider[] detectedObjects;
@@ -204,7 +206,10 @@ public class UnitController : MonoBehaviour
         //go to the food
         if (detectedFoodObjects.Count != 0)
         {
-            targetDestination = detectedFoodObjects[0].transform.position;
+            float foodChoice = Mathf.Ceil(Mathf.Abs((float)NextGaussianDouble()) * decisivness + distanceChoice);
+            foodChoice = Mathf.Clamp(foodChoice, 0.0f, detectedFoodObjects.Count-1);
+            targetDestination = detectedFoodObjects[(int)foodChoice].transform.position;
+            
         }
         else
         {
