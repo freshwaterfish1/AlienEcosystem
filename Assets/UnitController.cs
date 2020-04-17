@@ -53,6 +53,7 @@ public class UnitController : MonoBehaviour
 
     [Range(0.0f, 5.0f)]
     public float metabolicRate = 1.0f;
+    public float mutationRate = 0.05f; //Mutation Rate
 
 
     public float movementEfficiency = 0.0001f;
@@ -216,14 +217,14 @@ public class UnitController : MonoBehaviour
             }
 
         }
-
+        
         //go to the food
         if (detectedFoodObjects.Count != 0)
         {
             float foodChoice = Mathf.Ceil(Mathf.Abs((float)NextGaussianDouble()) * decisivness + distanceChoice);
             foodChoice = Mathf.Clamp(foodChoice, 0.0f, detectedFoodObjects.Count-1);
             targetDestination = detectedFoodObjects[(int)foodChoice].transform.position;
-            
+            //detectedFoodObjects[0].gameObject.GetComponent<food>().energyContent - future code to allow choice by energy content
         }
         else
         {
@@ -254,8 +255,12 @@ public class UnitController : MonoBehaviour
         //Increse it's Generation and then rename it to that generation
         childUnit.gameObject.GetComponent<UnitController>().generationCount += 1;
         childUnit.gameObject.name = ("Unit Generation " + childUnit.gameObject.GetComponent<UnitController>().generationCount);
-        childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * 0.05f;
-        childUnit.gameObject.GetComponent<UnitController>().speed = speed + (float)NextGaussianDouble() * speed * 0.05f;
+
+        //Mutates the child
+        childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * mutationRate;
+        childUnit.gameObject.GetComponent<UnitController>().speed = speed + (float)NextGaussianDouble() * speed * mutationRate;
+        childUnit.gameObject.GetComponent<UnitController>().memoryLength = memoryLength + (float)NextGaussianDouble() * memoryLength * mutationRate;
+        childUnit.gameObject.GetComponent<UnitController>().decisivness = decisivness + (float)NextGaussianDouble() * decisivness * mutationRate;
 
         //Make circle
         //childUnit.gameObject.GetComponent<UnitController>().CreateCircle();
