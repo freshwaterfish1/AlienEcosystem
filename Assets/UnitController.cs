@@ -157,9 +157,9 @@ public class UnitController : MonoBehaviour
             Hunt();
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.T))
         {
-            
+            Debug.Log("Random" + NextGaussianDouble());
         }
 
     }
@@ -217,8 +217,27 @@ public class UnitController : MonoBehaviour
         rend.material.SetColor("_Color", unitColor);
     }
 
+    void Mutate()
+    {
+        
+    }
+    public static double NextGaussianDouble()
+    {
+        double u, v, S;
 
-    private void OnTriggerStay(Collider collisionobject)
+        do
+        {
+            u = 2.0 * Random.value - 1.0;
+            v = 2.0 * Random.value - 1.0;
+            S = u * u + v * v;
+        }
+        while (S >= 1.0);
+   
+        float fac = Mathf.Sqrt(-2.0f * Mathf.Log((float)S) / (float)S);
+        return u * fac;
+    }
+
+        private void OnTriggerStay(Collider collisionobject)
     {
         Debug.Log(collisionobject);
         if (collisionobject.tag == "Food")
