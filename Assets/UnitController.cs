@@ -43,7 +43,7 @@ public class UnitController : MonoBehaviour
     public float sensoryRange = 10.0f;
     [Range(0.0f, 5.0f)]
     public float metabolicRate = 1.0f;
-    
+
     public float movementEfficiency = 0.0001f;
 
     public float reproductionChance = 0.0f; //reproduction chance each frame
@@ -99,7 +99,7 @@ public class UnitController : MonoBehaviour
         energy -= distanceTraveled * movementEfficiency;
 
         //reproduction logic: Update reproduction chance and determine if cell will reproduce
-       
+
         if (reproductionTimer >= reproductionCooldown)
         {
             reproductionTimer=0.0f;
@@ -142,7 +142,7 @@ public class UnitController : MonoBehaviour
         if (energy <= 0)
         {
             //Debug.Log(gameObject + ("has died"));
-            
+
             Destroy(gameObject);
         }
 
@@ -213,30 +213,24 @@ public class UnitController : MonoBehaviour
         GameObject childUnit = Instantiate(gameObject);
 
         //Stops and resets the navmesh agent - ought to fix some bugs.
-        
+
         childUnit.gameObject.GetComponent<UnitController>().agent.isStopped = true;
         childUnit.gameObject.GetComponent<UnitController>().agent.ResetPath();
-        
+
 
         childUnit.transform.parent = SpeciesHolder.transform;
+
         childUnit.gameObject.GetComponent<UnitController>().generationCount += 1;
         childUnit.gameObject.name = ("Unit Generation " + childUnit.gameObject.GetComponent<UnitController>().generationCount);
 
         childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange;
 
-        //childUnit.gameObject.GetComponent<UnitController>().energy = energy * 0.5f;
-        
-    
 
         //Get Colored
         unitColor = new Color((speed / 25), (sensoryRange / 50), (energy / 100), 1.0f);
         rend.material.SetColor("_Color", unitColor);
     }
 
-    void Mutate()
-    {
-        
-    }
     public static double NextGaussianDouble()
     {
         double u, v, S;
@@ -248,7 +242,7 @@ public class UnitController : MonoBehaviour
             S = u * u + v * v;
         }
         while (S >= 1.0);
-   
+
         float fac = Mathf.Sqrt(-2.0f * Mathf.Log((float)S) / (float)S);
         return u * fac;
     }
