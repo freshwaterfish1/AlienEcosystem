@@ -151,12 +151,6 @@ public class GameController : MonoBehaviour
 
     void SpreadItem()
     {
-        /*
-        GameObject toprightfood = Instantiate(itemToSpawn[Random.Range(0, itemToSpawn.Length)], new Vector3(itemXSpread, 0, itemZSpread), Quaternion.identity, gameObject.transform);
-        GameObject bottomleft = Instantiate(itemToSpawn[Random.Range(0, itemToSpawn.Length)], new Vector3(-itemXSpread, 0, -itemZSpread), Quaternion.identity, gameObject.transform);
-        GameObject bottomright = Instantiate(itemToSpawn[Random.Range(0, itemToSpawn.Length)], new Vector3(-itemXSpread, 0, itemZSpread), Quaternion.identity, gameObject.transform);
-        GameObject topleft = Instantiate(itemToSpawn[Random.Range(0, itemToSpawn.Length)], new Vector3(itemXSpread, 0, -itemZSpread), Quaternion.identity, gameObject.transform);
-        */
 
         Vector3 randPosition = new Vector3((Random.Range(-itemXSpread, itemXSpread)), (Random.Range(-itemYSpread, itemYSpread)), (Random.Range(-itemZSpread, itemZSpread)));
 

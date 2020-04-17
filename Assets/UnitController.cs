@@ -4,35 +4,36 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
 
+//[RequireComponent(typeof(LineRenderer))]
 public class UnitController : MonoBehaviour
 {
-
+    [Header("Main Variables")]
     public GameObject SpeciesHolder;
     public NavMeshAgent agent;
     public float timer = 0.0f;
-
     public float distanceTraveled = 0.0f;
+    public GameObject sensoryRangeDisplay;
+    bool mouthOpen = false;
     Vector3 lastPosition;
 
     [Range(0.0f, 25.0f)]
     public float memoryLength = 10.0f;
-    public float memoryLengthUsage;
-    public GameObject sensoryRangeDisplay;
-    public bool mouthOpen = false;
+    float memoryLengthUsage;
+    
+    
 
-
-    [SerializeField]
+    
+    //[SerializeField]
     float itemXSpread = 30f;
-
-    [SerializeField]
+    //[SerializeField]
     float itemYSpread = 0;
-
-    [SerializeField]
+    //[SerializeField]
     float itemZSpread = 30f;
 
     // Start is called before the first frame update
     public float energy = 100.0f;
-
+    
+    [Header("Variables")]
     [Range(0.0f, 25.0f)]
     public float speed = 3.0f;
     float speedMin = 0.0f;
@@ -53,6 +54,7 @@ public class UnitController : MonoBehaviour
     [Range(0.0f, 5.0f)]
     public float metabolicRate = 1.0f;
 
+
     public float movementEfficiency = 0.0001f;
 
     public float reproductionChance = 0.0f; //reproduction chance each frame
@@ -62,10 +64,8 @@ public class UnitController : MonoBehaviour
     public float decisivness = 1.0f; //the great this is, the more likely a cell is to go for further food
     public float distanceChoice = 0.0f; //more likely to go for nth food.
 
-
+    [Header("Lists")]
     public Collider[] detectedObjects;
-
-
     public List<System.Action> actionList = new List<System.Action>();
     public List<GameObject> detectedFoodObjects = new List<GameObject>();
 
@@ -76,6 +76,12 @@ public class UnitController : MonoBehaviour
 
     Renderer rend;
 
+    /*
+     int segments = 10;
+     float xradius = 5;
+    public float yradius = 5;
+    LineRenderer line;
+    */
 
     void Start()
     {
@@ -89,6 +95,14 @@ public class UnitController : MonoBehaviour
         actionList.Add(Hunt);
         actionList.Add(Wander);
 
+        /*
+        //make circle
+        line = gameObject.GetComponent<LineRenderer>();
+        //line.SetVertexCount(segments + 1);
+        line.positionCount = (segments + 1);
+        line.useWorldSpace = false;
+        CreateCircle();
+        */
     }
 
 
@@ -242,7 +256,9 @@ public class UnitController : MonoBehaviour
         childUnit.gameObject.name = ("Unit Generation " + childUnit.gameObject.GetComponent<UnitController>().generationCount);
         childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * 0.05f;
         childUnit.gameObject.GetComponent<UnitController>().speed = speed + (float)NextGaussianDouble() * speed * 0.05f;
-        
+
+        //Make circle
+        //childUnit.gameObject.GetComponent<UnitController>().CreateCircle();
 
 
 
@@ -267,8 +283,28 @@ public class UnitController : MonoBehaviour
         float fac = Mathf.Sqrt(-2.0f * Mathf.Log((float)S) / (float)S);
         return u * fac;
     }
+    /*
+    void CreateCircle()
+    {
+        float x;
+        float y;
+        float z;
 
-        private void OnTriggerStay(Collider collisionobject)
+        float angle = 20f;
+
+        for (int i = 0; i < (segments + 1); i++)
+        {
+            x = Mathf.Sin(Mathf.Deg2Rad * angle) * sensoryRange;
+            y = Mathf.Cos(Mathf.Deg2Rad * angle) * sensoryRange;
+
+            line.SetPosition(i, new Vector3(x, y, 0));
+
+            angle += (360f / segments);
+        }
+    }
+    */
+
+    private void OnTriggerStay(Collider collisionobject)
     {
         //Debug.Log(collisionobject);
         if (collisionobject.tag == "Food")
