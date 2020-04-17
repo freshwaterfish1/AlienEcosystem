@@ -35,12 +35,21 @@ public class UnitController : MonoBehaviour
 
     [Range(0.0f, 25.0f)]
     public float speed = 3.0f;
+    float speedMin = 0.0f;
+    float speedMax = 25.0f;
+
     [Range(0.0f, 25.0f)]
     public float acceleration = 3.0f;
+
     [Range(0.0f, 25.0f)]
-    public float turnspeed = 3.0f;
+    public float turnSpeed = 3.0f;
+
     [Range(0.0f, 50.0f)]
     public float sensoryRange = 10.0f;
+    float sensoryRangeMin = 0.0f;
+    float sensoryRangeMax = 50.0f;
+
+
     [Range(0.0f, 5.0f)]
     public float metabolicRate = 1.0f;
 
@@ -49,6 +58,8 @@ public class UnitController : MonoBehaviour
     public float reproductionChance = 0.0f; //reproduction chance each frame
     public float reproductionCooldown = 1.0f;
     public float reproductionTimer;
+
+
 
     public Collider[] detectedObjects;
 
@@ -83,8 +94,9 @@ public class UnitController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        unitColor = new Color((speed / 25), (sensoryRange / 50), (energy / 100), 1.0f);
-        rend.material.SetColor("_Color", unitColor);
+        //Don't Color on Update - do this when they are spawned
+        //unitColor = new Color((speed / 25), (sensoryRange / 50), (energy / 100), 1.0f);
+        //rend.material.SetColor("_Color", unitColor);
 
 
         //rend.material.SetColor( "unitcolor", new Color(            ((speed / 25) * 100),            ((sensoryRange / 50) * 100),            ((energy / 100) * 100)));
@@ -136,7 +148,7 @@ public class UnitController : MonoBehaviour
 
         // Set Navmesh Agent setting
         agent.speed = speed;
-        agent.angularSpeed = turnspeed;
+        agent.angularSpeed = turnSpeed;
         agent.acceleration = acceleration;
         agent.SetDestination(targetDestination);
         if (energy <= 0)
@@ -217,17 +229,17 @@ public class UnitController : MonoBehaviour
         childUnit.gameObject.GetComponent<UnitController>().agent.isStopped = true;
         childUnit.gameObject.GetComponent<UnitController>().agent.ResetPath();
 
-
+        //Parent it to the correct species
         childUnit.transform.parent = SpeciesHolder.transform;
-
+        //Increse it's Generation and then rename it to that generation
         childUnit.gameObject.GetComponent<UnitController>().generationCount += 1;
         childUnit.gameObject.name = ("Unit Generation " + childUnit.gameObject.GetComponent<UnitController>().generationCount);
 
-        childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange;
 
 
-        //Get Colored
-        unitColor = new Color((speed / 25), (sensoryRange / 50), (energy / 100), 1.0f);
+
+        //Get Colored based on new values
+        unitColor = new Color((speed / 25), (sensoryRange / 50), (memoryLength / 100), 1.0f);
         rend.material.SetColor("_Color", unitColor);
     }
 
