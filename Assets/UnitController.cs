@@ -222,7 +222,7 @@ public class UnitController : MonoBehaviour
     void Reproduce()
     {
         energy = energy * 0.5f;
-        GameObject childUnit = Instantiate(gameObject);
+        GameObject childUnit = Instantiate(gameObject,gameObject.transform.position,Quaternion.identity);
 
         //Stops and resets the navmesh agent - ought to fix some bugs.
 
