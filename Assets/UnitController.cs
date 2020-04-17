@@ -222,7 +222,9 @@ public class UnitController : MonoBehaviour
     void Reproduce()
     {
         energy = energy * 0.5f;
+
         GameObject childUnit = Instantiate(gameObject,gameObject.transform.position,Quaternion.identity);
+        reproductionChance = 0.0f;
 
         //Stops and resets the navmesh agent - ought to fix some bugs.
 
@@ -236,7 +238,7 @@ public class UnitController : MonoBehaviour
         childUnit.gameObject.name = ("Unit Generation " + childUnit.gameObject.GetComponent<UnitController>().generationCount);
         childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * 0.05f;
         childUnit.gameObject.GetComponent<UnitController>().speed = speed + (float)NextGaussianDouble() * speed * 0.05f;
-        
+
 
 
 
