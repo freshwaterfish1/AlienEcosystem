@@ -56,7 +56,7 @@ public class UnitController : MonoBehaviour
     public float movementEfficiency = 0.0001f;
 
     public float reproductionChance = 0.0f; //reproduction chance each frame
-    public float reproductionCooldown = 1.0f;
+    public float reproductionCooldown = 2.0f;
     public float reproductionTimer;
 
 
@@ -234,6 +234,9 @@ public class UnitController : MonoBehaviour
         //Increse it's Generation and then rename it to that generation
         childUnit.gameObject.GetComponent<UnitController>().generationCount += 1;
         childUnit.gameObject.name = ("Unit Generation " + childUnit.gameObject.GetComponent<UnitController>().generationCount);
+        childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * 0.05f;
+        childUnit.gameObject.GetComponent<UnitController>().speed = speed + (float)NextGaussianDouble() * speed * 0.05f;
+        
 
 
 
