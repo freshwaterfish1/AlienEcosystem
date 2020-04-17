@@ -207,20 +207,17 @@ public class UnitController : MonoBehaviour
     {
         GameObject childUnit = Instantiate(gameObject);
         childUnit.transform.parent = SpeciesHolder.transform;
-        childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange;
         childUnit.gameObject.GetComponent<UnitController>().energy = energy * 0.5f;
         energy = energy * 0.5f;
-    
+        childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * 0.1f;
+        childUnit.gameObject.GetComponent<UnitController>().speed = speed + (float)NextGaussianDouble() * speed * 0.1f;
+        childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * 0.1f;
 
         //Get Colored
         unitColor = new Color((speed / 25), (sensoryRange / 50), (energy / 100), 1.0f);
         rend.material.SetColor("_Color", unitColor);
     }
 
-    void Mutate()
-    {
-        
-    }
     public static double NextGaussianDouble()
     {
         double u, v, S;
