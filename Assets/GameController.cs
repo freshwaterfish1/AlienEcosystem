@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour
 {
 
     public GameObject[] itemToSpawn;
+    public GameObject foodParent;
     public TextMeshProUGUI SpeciesAText;
     public GameObject SpeciesAParent;
     public GameObject GeneticsMenu;
@@ -85,6 +86,7 @@ public class GameController : MonoBehaviour
         Vector3 randPosition = new Vector3((Random.Range(-itemXSpread, itemXSpread)), (Random.Range(-itemYSpread, itemYSpread)), (Random.Range(-itemZSpread, itemZSpread)));
 
         GameObject spawnedFood = Instantiate(itemToSpawn[Random.Range(0, itemToSpawn.Length)], randPosition, Quaternion.identity, gameObject.transform);
+        spawnedFood.transform.parent = foodParent.transform;
         //random size
         //spawnedFood.transform.localScale = new Vector3(Random.Range(.7f, 1.2f), Random.Range(.7f, 1.2f), Random.Range(.7f, 1.2f));
     }
