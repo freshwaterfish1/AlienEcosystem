@@ -716,7 +716,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 490, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &186955195
 GameObject:
@@ -799,7 +799,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 186955198}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2027326079}
+        m_MethodName: mutateSpeed
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &186955198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1003,6 +1014,31 @@ PrefabInstance:
       propertyPath: SpeciesHolder
       value: 
       objectReference: {fileID: 843052639}
+    - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
+        type: 3}
+      propertyPath: acceleration
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
+        type: 3}
+      propertyPath: turnSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
+        type: 3}
+      propertyPath: sensoryRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
+        type: 3}
+      propertyPath: memoryLength
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
+        type: 3}
+      propertyPath: decisivness
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2597662600051922323, guid: e95df13099b8cf44ea087b4553219424,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1058,6 +1094,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2597662600051922324, guid: e95df13099b8cf44ea087b4553219424,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 2597662600051922327, guid: e95df13099b8cf44ea087b4553219424,
         type: 3}
       propertyPath: m_Name
@@ -1584,7 +1625,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 490, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &477458617
 MonoBehaviour:
@@ -1739,7 +1780,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 490, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &505302947
 MonoBehaviour:
@@ -2436,6 +2477,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unit
       objectReference: {fileID: 0}
+    - target: {fileID: 2597662600051922327, guid: e95df13099b8cf44ea087b4553219424,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e95df13099b8cf44ea087b4553219424, type: 3}
 --- !u!4 &695374116 stripped
@@ -2731,7 +2777,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &720743150
 MonoBehaviour:
@@ -2790,9 +2836,9 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
+  m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
 --- !u!1 &731408608
 GameObject:
@@ -2811,7 +2857,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &731408609
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2949,7 +2995,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 748039760}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2027326079}
+        m_MethodName: mutateSpeed
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &748039760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3095,7 +3152,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 490, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &798545552
 MonoBehaviour:
@@ -3426,7 +3483,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &878324516
 MonoBehaviour:
@@ -3449,9 +3506,9 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
+  m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
 --- !u!114 &878324517
 MonoBehaviour:
@@ -3632,7 +3689,7 @@ Camera:
   far clip plane: 1000
   field of view: 128.5
   orthographic: 1
-  orthographic size: 80
+  orthographic size: 33.1
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3697,7 +3754,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 490, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &989431744
 MonoBehaviour:
@@ -4194,7 +4251,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 490, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1063195499
 GameObject:
@@ -4363,8 +4420,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -114.9}
-  m_SizeDelta: {x: 500, y: 220.8}
+  m_AnchoredPosition: {x: 104.6, y: -114.9}
+  m_SizeDelta: {x: 209.3, y: 220.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1092933469
 MonoBehaviour:
@@ -4387,10 +4444,10 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
+  m_ChildScaleWidth: 1
+  m_ChildScaleHeight: 1
 --- !u!114 &1092933470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4904,7 +4961,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 490, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1281113056
 MonoBehaviour:
@@ -6484,7 +6541,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 490, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1743921029
 MonoBehaviour:
@@ -6671,7 +6728,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1780410862
 MonoBehaviour:
@@ -6694,9 +6751,9 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
+  m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
 --- !u!114 &1780410863
 MonoBehaviour:
@@ -7062,7 +7119,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 490, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1898750614
 GameObject:
@@ -7578,7 +7635,7 @@ MonoBehaviour:
   itemYSpread: 0
   itemZSpread: 30
   numbItemsToSpawn: 15
-  timer: 3
+  timer: 0.02
 --- !u!1001 &2083325319
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7849,12 +7906,12 @@ PrefabInstance:
     - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
         type: 3}
       propertyPath: speed
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
         type: 3}
       propertyPath: acceleration
-      value: 20
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
         type: 3}
@@ -7864,12 +7921,32 @@ PrefabInstance:
     - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
         type: 3}
       propertyPath: memoryLength
-      value: 1.06
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
         type: 3}
       propertyPath: sensoryRange
-      value: 15.1
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
+        type: 3}
+      propertyPath: playerCell
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
+        type: 3}
+      propertyPath: turnSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
+        type: 3}
+      propertyPath: decisivness
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
+        type: 3}
+      propertyPath: mutationRate
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2597662600051922323, guid: e95df13099b8cf44ea087b4553219424,
         type: 3}

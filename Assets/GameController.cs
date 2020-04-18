@@ -162,6 +162,38 @@ public class GameController : MonoBehaviour
         LossScreen.SetActive(true);
     }
 
+    //Player Forced Mutation
+    public void mutateSpeed(bool pos)
+    {
+        if(pos == true)
+        {
+            //find all childern
+            foreach (Transform child in SpeciesAParent.transform)
+            {
+
+                if (child.gameObject.GetComponent<UnitController>().generationCount >= SpeciesAGenerationCount)
+                {
+                    child.gameObject.GetComponent<UnitController>().speed += 1;
+                }
+            }
+        }
+
+        if (pos == false)
+        {
+            //find all childern
+            foreach (Transform child in SpeciesAParent.transform)
+            {
+
+                if (child.gameObject.GetComponent<UnitController>().generationCount >= SpeciesAGenerationCount)
+                {
+                    child.gameObject.GetComponent<UnitController>().speed -= 1;
+                }
+            }
+        }
+    }
+
+
+
 
     void SpreadItem()
     {

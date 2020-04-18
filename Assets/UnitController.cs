@@ -8,6 +8,7 @@ using System.Linq;
 public class UnitController : MonoBehaviour
 {
     [Header("Main Variables")]
+    public bool playerCell = false;
     public GameObject SpeciesHolder;
     public NavMeshAgent agent;
     public float timer = 0.0f;
@@ -89,11 +90,14 @@ public class UnitController : MonoBehaviour
 
     void Start()
     {
+        acceleration = speed;
+        turnSpeed = speed;
+
 
         lastPosition = transform.position;
         rend = GetComponent<Renderer>();
 
-        unitColor = new Color((speed / 25), (sensoryRange / 50), (energy / 100), 1.0f);
+        unitColor = new Color((speed / 25), (sensoryRange / 50), (memoryLength / 100), 1.0f);
         rend.material.SetColor("_Color", unitColor);
 
         actionList.Add(Hunt);
@@ -131,6 +135,21 @@ public class UnitController : MonoBehaviour
         energy -= distanceTraveled * movementEfficiency;
 
         //reproduction logic: Update reproduction chance and determine if cell will reproduce
+
+        if(playerCell == true)
+        {
+            //Do the player defined mutations
+            // check if this is the newest generation
+            //if it is, set the value in the GUI
+            
+
+            sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * 0;
+            speed = speed + (float)NextGaussianDouble() * speed * 0;
+            memoryLength = memoryLength + (float)NextGaussianDouble() * memoryLength * 0;
+            decisivness = decisivness + (float)NextGaussianDouble() * decisivness * 0;
+        }
+
+
 
         if (reproductionTimer >= reproductionCooldown)
         {
@@ -269,11 +288,26 @@ public class UnitController : MonoBehaviour
         childUnit.gameObject.GetComponent<UnitController>().lifeTimer = 0.0f;
         childUnit.gameObject.name = ("Unit Generation " + childUnit.gameObject.GetComponent<UnitController>().generationCount);
 
-        //Mutates the child
-        childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * mutationRate;
-        childUnit.gameObject.GetComponent<UnitController>().speed = speed + (float)NextGaussianDouble() * speed * mutationRate;
-        childUnit.gameObject.GetComponent<UnitController>().memoryLength = memoryLength + (float)NextGaussianDouble() * memoryLength * mutationRate;
-        childUnit.gameObject.GetComponent<UnitController>().decisivness = decisivness + (float)NextGaussianDouble() * decisivness * mutationRate;
+        if(playerCell == false)
+        {
+            //Mutates the child if it's not a player cell
+            childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * mutationRate;
+            //Debug.Log("sensoryRange change " + (float)NextGaussianDouble() * sensoryRange * mutationRate);
+
+            childUnit.gameObject.GetComponent<UnitController>().speed = speed + (float)NextGaussianDouble() * speed * mutationRate;
+            //Debug.Log("speed change " + (float)NextGaussianDouble() * speed * mutationRate);
+
+            childUnit.gameObject.GetComponent<UnitController>().acceleration = childUnit.gameObject.GetComponent<UnitController>().speed;
+            childUnit.gameObject.GetComponent<UnitController>().turnSpeed = childUnit.gameObject.GetComponent<UnitController>().speed;
+
+            childUnit.gameObject.GetComponent<UnitController>().memoryLength = memoryLength + (float)NextGaussianDouble() * memoryLength * mutationRate;
+            //Debug.Log("memoryLength change " + (float)NextGaussianDouble() * memoryLength * mutationRate);
+
+            childUnit.gameObject.GetComponent<UnitController>().decisivness = decisivness + (float)NextGaussianDouble() * decisivness * mutationRate;
+            //Debug.Log("decisivness change " + (float)NextGaussianDouble() * decisivness * mutationRate);
+        }
+
+
 
         //Make circle
         //childUnit.gameObject.GetComponent<UnitController>().CreateCircle();
