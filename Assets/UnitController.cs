@@ -65,6 +65,9 @@ public class UnitController : MonoBehaviour
     public float decisivness = 1.0f; //the great this is, the more likely a cell is to go for further food
     public float distanceChoice = 0.0f; //more likely to go for nth food.
 
+    public float lifespan = 30.0f;
+    public float lifeTimer = 0.0f;
+
     [Header("Lists")]
     public Collider[] detectedObjects;
     public List<System.Action> actionList = new List<System.Action>();
@@ -175,6 +178,15 @@ public class UnitController : MonoBehaviour
             Destroy(gameObject);
         }
 
+        if(lifeTimer >= lifespan)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            lifeTimer += Time.deltaTime;
+        }
+        
 
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -254,6 +266,7 @@ public class UnitController : MonoBehaviour
         childUnit.transform.parent = SpeciesHolder.transform;
         //Increse it's Generation and then rename it to that generation
         childUnit.gameObject.GetComponent<UnitController>().generationCount += 1;
+        childUnit.gameObject.GetComponent<UnitController>().lifeTimer = 0.0f;
         childUnit.gameObject.name = ("Unit Generation " + childUnit.gameObject.GetComponent<UnitController>().generationCount);
 
         //Mutates the child
