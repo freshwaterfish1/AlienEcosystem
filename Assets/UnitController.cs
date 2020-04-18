@@ -10,6 +10,7 @@ public class UnitController : MonoBehaviour
     [Header("Main Variables")]
     public bool playerCell = false;
     public GameObject SpeciesHolder;
+    public GameObject GameController;
     public NavMeshAgent agent;
     public float timer = 0.0f;
     public float distanceTraveled = 0.0f;
@@ -305,17 +306,24 @@ public class UnitController : MonoBehaviour
             childUnit.gameObject.GetComponent<UnitController>().decisivness = decisivness + (float)NextGaussianDouble() * decisivness * mutationRate;
             //Debug.Log("decisivness change " + (float)NextGaussianDouble() * decisivness * mutationRate);
         }
+        if (playerCell == true)
+        {
+            //add evolution points
+            GameController.gameObject.GetComponent<GameController>().playerEvolutionPoints = GameController.gameObject.GetComponent<GameController>().playerEvolutionPoints + GameController.gameObject.GetComponent<GameController>().pointsPerSplit;
+            GameController.gameObject.GetComponent<GameController>().evolutionPointsText.text = ""+GameController.gameObject.GetComponent<GameController>().playerEvolutionPoints;
 
 
 
-        //Make circle
-        //childUnit.gameObject.GetComponent<UnitController>().CreateCircle();
+        }
+
+            //Make circle
+            //childUnit.gameObject.GetComponent<UnitController>().CreateCircle();
 
 
 
 
-        //Get Colored based on new values
-        updateColor();
+            //Get Colored based on new values
+            updateColor();
 
     }
     public void updateColor()

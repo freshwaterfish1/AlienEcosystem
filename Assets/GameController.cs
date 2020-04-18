@@ -57,6 +57,21 @@ public class GameController : MonoBehaviour
     public TextMeshProUGUI speedAvergeText;
     public TextMeshProUGUI speedGenerationText;
 
+    public TextMeshProUGUI memoryAvergeText;
+    public TextMeshProUGUI memoryGenerationText;
+
+    public TextMeshProUGUI senserangeAvergeText;
+    public TextMeshProUGUI senserangeGenerationText;
+
+
+
+    public TextMeshProUGUI evolutionPointsText;
+
+
+    public float playerEvolutionPoints = 0;
+
+    [Range(0.0f, 1.0f)]
+    public float pointsPerSplit = .2f;
 
     // Start is called before the first frame update
     void Start()
@@ -107,37 +122,64 @@ public class GameController : MonoBehaviour
         int generationCount = 0;
         int speciesCount = 0;
 
-        float generationValue = 0f;
-        float speciesValue = 0f;
+
+        float speedGenerationValue = 0f;
+        float speedSpeciesValue = 0f;
+
+        float memoryGenerationValue = 0f;
+        float memorySpeciesValue = 0f;
         
+        float senserangeGenerationValue = 0f;
+        float senserangeSpeciesValue = 0f;
+        
+
+
+
+        //Player Units
         foreach (Transform child in SpeciesAParent.transform)
         {
             speciesCount++;
-            speciesValue += child.gameObject.GetComponent<UnitController>().speed;
+            speedSpeciesValue += child.gameObject.GetComponent<UnitController>().speed;
+            memorySpeciesValue += child.gameObject.GetComponent<UnitController>().memoryLength;
+            senserangeSpeciesValue += child.gameObject.GetComponent<UnitController>().sensoryRange;
 
             if (child.gameObject.GetComponent<UnitController>().generationCount >= SpeciesAGenerationCount)
             {
                 generationCount++;
-                generationValue += child.gameObject.GetComponent<UnitController>().speed;
+                speedGenerationValue += child.gameObject.GetComponent<UnitController>().speed;
+                memoryGenerationValue += child.gameObject.GetComponent<UnitController>().memoryLength;
+                senserangeGenerationValue += child.gameObject.GetComponent<UnitController>().sensoryRange;
             }
 
             if (child.gameObject.GetComponent<UnitController>().generationCount > SpeciesAGenerationCount)
             {
-
                 SpeciesAGenerationCount = child.gameObject.GetComponent<UnitController>().generationCount;
             }
 
 
         }
+
         //total across species
+        //total across species
+        float averageSpeed = (speedSpeciesValue / speciesCount);
+        float averageMemory = (memorySpeciesValue / speciesCount);
+        float averageSenserange = (senserangeSpeciesValue / speciesCount);
+        //Round the values to be nice
+        averageSpeed = Mathf.Round(averageSpeed * 100f) / 100f;
+        averageMemory = Mathf.Round(averageMemory * 100f) / 100f;
+        averageSenserange = Mathf.Round(averageSenserange * 100f) / 100f;
+        //set the value in the correct text boxes
+        speedAvergeText.text = "Average Speed: " + System.String.Format("Value: {0:F2}", averageSpeed);
+        speedGenerationText.text = "" + (speedGenerationValue / generationCount);
 
-        float averageSpeed = (speciesValue / speciesCount);
-        averageSpeed = Mathf.Round(averageSpeed * 10f) / 10f;
-        speedAvergeText.text = "Average Speed: " + System.String.Format("Value: {0:F1}", averageSpeed);
+        memoryAvergeText.text = "Average Memory Length: " + System.String.Format("Value: {0:F2}", averageMemory);
+        memoryGenerationText.text = "" + (memoryGenerationValue / generationCount);
 
-        //generation value
-        speedGenerationText.text = "Generation " + SpeciesAGenerationCount  + " Speed:" + (generationValue / generationCount);
+        senserangeAvergeText.text = "Average Sensory Range: " + System.String.Format("Value: {0:F2}", averageSenserange);
+        senserangeGenerationText.text = "" + (senserangeGenerationValue / generationCount);
 
+
+        //CPU Units
         foreach (Transform child in SpeciesBParent.transform)
         {
             if (child.gameObject.GetComponent<UnitController>().generationCount > SpeciesBGenerationCount)
@@ -145,6 +187,8 @@ public class GameController : MonoBehaviour
                 SpeciesBGenerationCount = child.gameObject.GetComponent<UnitController>().generationCount;
             }
         }
+
+
 
         foreach (Transform child in SpeciesCParent.transform)
         {
@@ -194,7 +238,7 @@ public class GameController : MonoBehaviour
     //Player Forced Mutation
     public void mutateSpeed(bool pos)
     {
-        if(pos == true)
+        if((pos == true) && (playerEvolutionPoints >=1))
         {
             //find all childern
             foreach (Transform child in SpeciesAParent.transform)
@@ -206,9 +250,11 @@ public class GameController : MonoBehaviour
                 }
                 child.gameObject.GetComponent<UnitController>().updateColor();
             }
+            playerEvolutionPoints--;
+            evolutionPointsText.text = "" + playerEvolutionPoints;
         }
 
-        if (pos == false)
+        if ((pos == false) && (playerEvolutionPoints >= 1))
         {
             //find all childern
             foreach (Transform child in SpeciesAParent.transform)
@@ -220,8 +266,82 @@ public class GameController : MonoBehaviour
                 }
                 child.gameObject.GetComponent<UnitController>().updateColor();
             }
+            playerEvolutionPoints--;
+            evolutionPointsText.text = "" + playerEvolutionPoints;
         }
         
+    }
+
+    public void mutateMemory(bool pos)
+    {
+        if ((pos == true) && (playerEvolutionPoints >= 1))
+        {
+            //find all childern
+            foreach (Transform child in SpeciesAParent.transform)
+            {
+
+                if (child.gameObject.GetComponent<UnitController>().generationCount >= SpeciesAGenerationCount)
+                {
+                    child.gameObject.GetComponent<UnitController>().memoryLength += 1;
+                }
+                child.gameObject.GetComponent<UnitController>().updateColor();
+            }
+            playerEvolutionPoints--;
+            evolutionPointsText.text = "" + playerEvolutionPoints;
+        }
+
+        if ((pos == false) && (playerEvolutionPoints >= 1))
+        {
+            //find all childern
+            foreach (Transform child in SpeciesAParent.transform)
+            {
+
+                if (child.gameObject.GetComponent<UnitController>().generationCount >= SpeciesAGenerationCount)
+                {
+                    child.gameObject.GetComponent<UnitController>().memoryLength -= 1;
+                }
+                child.gameObject.GetComponent<UnitController>().updateColor();
+            }
+            playerEvolutionPoints--;
+            evolutionPointsText.text = "" + playerEvolutionPoints;
+        }
+        
+    }
+
+    public void mutateSensernage(bool pos)
+    {
+        if ((pos == true) && (playerEvolutionPoints >= 1))
+        {
+            //find all childern
+            foreach (Transform child in SpeciesAParent.transform)
+            {
+
+                if (child.gameObject.GetComponent<UnitController>().generationCount >= SpeciesAGenerationCount)
+                {
+                    child.gameObject.GetComponent<UnitController>().sensoryRange += 1;
+                }
+                child.gameObject.GetComponent<UnitController>().updateColor();
+            }
+            playerEvolutionPoints--;
+            evolutionPointsText.text = "" + playerEvolutionPoints;
+        }
+
+        if ((pos == false) && (playerEvolutionPoints >= 1))
+        {
+            //find all childern
+            foreach (Transform child in SpeciesAParent.transform)
+            {
+
+                if (child.gameObject.GetComponent<UnitController>().generationCount >= SpeciesAGenerationCount)
+                {
+                    child.gameObject.GetComponent<UnitController>().sensoryRange -= 1;
+                }
+                child.gameObject.GetComponent<UnitController>().updateColor();
+            }
+            playerEvolutionPoints--;
+            evolutionPointsText.text = "" + playerEvolutionPoints;
+        }
+
     }
 
 
