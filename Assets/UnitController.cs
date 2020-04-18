@@ -304,8 +304,9 @@ public class UnitController : MonoBehaviour
         childUnit.gameObject.GetComponent<UnitController>().generationCount += 1;
         childUnit.gameObject.GetComponent<UnitController>().lifeTimer = 0.0f;
         childUnit.gameObject.name = ("Unit Generation " + childUnit.gameObject.GetComponent<UnitController>().generationCount);
+        reproductionTimer += Random.value; //offsets reproduction time for child so the species doesn't reproduce in descrete increments.
 
-        if(playerCell == false)
+        if (playerCell == false)
         {
             //Mutates the child if it's not a player cell
             childUnit.gameObject.GetComponent<UnitController>().speed = Mutate(speed, speedMin, speedMax, mutationRate);
@@ -317,7 +318,6 @@ public class UnitController : MonoBehaviour
             childUnit.gameObject.GetComponent<UnitController>().decisivness = Mutate(decisivness, decisivnessmin, decisivnessmax, mutationRate);
             //childUnit.gameObject.GetComponent<UnitController>().mutationRate = Mutate(mutationRate, mutationRateMin, mutationRateMax, mutationRate);  //allows variable mutation rate
             childUnit.gameObject.GetComponent<UnitController>().reproductionRate = Mutate(reproductionRate, reproductionRateMin, reproductionRateMax, mutationRate);
-            reproductionTimer += Random.value; //offsets reproduction time for child so the species doesn't reproduce in descrete increments.
         }
         if (playerCell == true)
         {
