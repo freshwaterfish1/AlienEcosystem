@@ -7578,6 +7578,7 @@ MonoBehaviour:
   itemYSpread: 0
   itemZSpread: 30
   numbItemsToSpawn: 15
+  timer: 3
 --- !u!1001 &2083325319
 PrefabInstance:
   m_ObjectHideFlags: 0

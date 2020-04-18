@@ -51,7 +51,8 @@ public class GameController : MonoBehaviour
 
     public int numbItemsToSpawn = 0;
 
-
+    public float timer = 3.0f;
+    float timerTicker;
 
 
     // Start is called before the first frame update
@@ -73,7 +74,20 @@ public class GameController : MonoBehaviour
         float simTimeShort = simulationTimer.gameObject.GetComponent<simulationTimer>().simulatedTime;
         simTimeShort = Mathf.Round(simTimeShort * 10f) / 10f;
         simulationTime.text = "Simulation Time: " + System.String.Format("Value: {0:F1}", simTimeShort) + " seconds";
-        
+
+
+        if (timerTicker <= 0)
+        {
+            timerTicker = timer;
+            SpreadItem();
+
+        }
+        else
+        {
+            timerTicker -= Time.deltaTime;
+        }
+
+
 
         if (Input.GetKeyDown(KeyCode.R))
         {
