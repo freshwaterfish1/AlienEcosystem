@@ -12,4 +12,13 @@ public class food : MonoBehaviour
         
         gameObject.transform.localScale = new Vector3(((energyContent - 10) / 40), ((energyContent - 10) / 40), ((energyContent - 10) / 40));
     }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Wall")
+        {
+            Destroy(gameObject);
+        }
+    }
+
 }

@@ -4,35 +4,38 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
 
+//[RequireComponent(typeof(LineRenderer))]
 public class UnitController : MonoBehaviour
 {
-
+    [Header("Main Variables")]
+    public bool playerCell = false;
     public GameObject SpeciesHolder;
+    public GameObject GameController;
     public NavMeshAgent agent;
     public float timer = 0.0f;
-
     public float distanceTraveled = 0.0f;
+    public GameObject sensoryRangeDisplay;
+    bool mouthOpen = false;
     Vector3 lastPosition;
 
     [Range(0.0f, 25.0f)]
     public float memoryLength = 10.0f;
-    public float memoryLengthUsage;
-    public GameObject sensoryRangeDisplay;
-    public bool mouthOpen = false;
+    float memoryLengthUsage;
+    
+    
 
-
-    [SerializeField]
+    
+    //[SerializeField]
     float itemXSpread = 30f;
-
-    [SerializeField]
+    //[SerializeField]
     float itemYSpread = 0;
-
-    [SerializeField]
+    //[SerializeField]
     float itemZSpread = 30f;
 
     // Start is called before the first frame update
     public float energy = 100.0f;
-
+    
+    [Header("Variables")]
     [Range(0.0f, 25.0f)]
     public float speed = 3.0f;
     float speedMin = 0.0f;
@@ -52,6 +55,8 @@ public class UnitController : MonoBehaviour
 
     [Range(0.0f, 5.0f)]
     public float metabolicRate = 1.0f;
+    public float mutationRate = 0.05f; //Mutation Rate
+
 
     public float movementEfficiency = 0.0001f;
 
@@ -59,11 +64,14 @@ public class UnitController : MonoBehaviour
     public float reproductionCooldown = 2.0f;
     public float reproductionTimer;
 
+    public float decisivness = 1.0f; //the great this is, the more likely a cell is to go for further food
+    public float distanceChoice = 0.0f; //more likely to go for nth food.
 
+    public float lifespan = 30.0f;
+    public float lifeTimer = 0.0f;
 
+    [Header("Lists")]
     public Collider[] detectedObjects;
-
-
     public List<System.Action> actionList = new List<System.Action>();
     public List<GameObject> detectedFoodObjects = new List<GameObject>();
 
@@ -74,19 +82,35 @@ public class UnitController : MonoBehaviour
 
     Renderer rend;
 
+    /*
+     int segments = 10;
+     float xradius = 5;
+    public float yradius = 5;
+    LineRenderer line;
+    */
 
     void Start()
     {
+        acceleration = speed;
+        turnSpeed = speed;
+
 
         lastPosition = transform.position;
         rend = GetComponent<Renderer>();
 
-        unitColor = new Color((speed / 25), (sensoryRange / 50), (energy / 100), 1.0f);
-        rend.material.SetColor("_Color", unitColor);
+        updateColor();
 
         actionList.Add(Hunt);
         actionList.Add(Wander);
 
+        /*
+        //make circle
+        line = gameObject.GetComponent<LineRenderer>();
+        //line.SetVertexCount(segments + 1);
+        line.positionCount = (segments + 1);
+        line.useWorldSpace = false;
+        CreateCircle();
+        */
     }
 
 
@@ -111,6 +135,21 @@ public class UnitController : MonoBehaviour
         energy -= distanceTraveled * movementEfficiency;
 
         //reproduction logic: Update reproduction chance and determine if cell will reproduce
+
+        if(playerCell == true)
+        {
+            //Do the player defined mutations
+            // check if this is the newest generation
+            //if it is, set the value in the GUI
+            
+
+            sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * 0;
+            speed = speed + (float)NextGaussianDouble() * speed * 0;
+            memoryLength = memoryLength + (float)NextGaussianDouble() * memoryLength * 0;
+            decisivness = decisivness + (float)NextGaussianDouble() * decisivness * 0;
+        }
+
+
 
         if (reproductionTimer >= reproductionCooldown)
         {
@@ -158,6 +197,15 @@ public class UnitController : MonoBehaviour
             Destroy(gameObject);
         }
 
+        if(lifeTimer >= lifespan)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            lifeTimer += Time.deltaTime;
+        }
+        
 
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -200,11 +248,14 @@ public class UnitController : MonoBehaviour
             }
 
         }
-
+        
         //go to the food
         if (detectedFoodObjects.Count != 0)
         {
-            targetDestination = detectedFoodObjects[0].transform.position;
+            float foodChoice = Mathf.Ceil(Mathf.Abs((float)NextGaussianDouble()) * decisivness + distanceChoice);
+            foodChoice = Mathf.Clamp(foodChoice, 0.0f, detectedFoodObjects.Count-1);
+            targetDestination = detectedFoodObjects[(int)foodChoice].transform.position;
+            //detectedFoodObjects[0].gameObject.GetComponent<food>().energyContent - future code to allow choice by energy content
         }
         else
         {
@@ -228,7 +279,9 @@ public class UnitController : MonoBehaviour
     //}
     void Reproduce()
     {
+
         energy = (energy - 5.0f) * 0.5f;
+
         reproductionChance = 0.0f;
         GameObject childUnit = Instantiate(gameObject,gameObject.transform.position,Quaternion.identity);
 
@@ -241,12 +294,8 @@ public class UnitController : MonoBehaviour
         childUnit.transform.parent = SpeciesHolder.transform;
         //Increse it's Generation and then rename it to that generation
         childUnit.gameObject.GetComponent<UnitController>().generationCount += 1;
+        childUnit.gameObject.GetComponent<UnitController>().lifeTimer = 0.0f;
         childUnit.gameObject.name = ("Unit Generation " + childUnit.gameObject.GetComponent<UnitController>().generationCount);
-<<<<<<< Updated upstream
-        childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * 0.05f;
-        childUnit.gameObject.GetComponent<UnitController>().speed = speed + (float)NextGaussianDouble() * speed * 0.05f;
-        
-=======
 
         if(playerCell == false)
         {
@@ -272,24 +321,26 @@ public class UnitController : MonoBehaviour
             //add evolution points
             GameController.gameObject.GetComponent<GameController>().playerEvolutionPoints = GameController.gameObject.GetComponent<GameController>().playerEvolutionPoints + GameController.gameObject.GetComponent<GameController>().pointsPerSplit;
             GameController.gameObject.GetComponent<GameController>().evolutionPointsText.text = ""+GameController.gameObject.GetComponent<GameController>().playerEvolutionPoints;
-
-
-
         }
+
+            //Make circle
+            //childUnit.gameObject.GetComponent<UnitController>().CreateCircle()
 
             //Make circle
             //childUnit.gameObject.GetComponent<UnitController>().CreateCircle();
 
->>>>>>> Stashed changes
 
 
 
+            //Get Colored based on new values
+            updateColor();
 
-        //Get Colored based on new values
+    }
+    public void updateColor()
+    {
         unitColor = new Color((speed / 25), (sensoryRange / 50), (memoryLength / 100), 1.0f);
         rend.material.SetColor("_Color", unitColor);
     }
-
     public static double NextGaussianDouble()
     {
         double u, v, S;
@@ -305,8 +356,28 @@ public class UnitController : MonoBehaviour
         float fac = Mathf.Sqrt(-2.0f * Mathf.Log((float)S) / (float)S);
         return u * fac;
     }
+    /*
+    void CreateCircle()
+    {
+        float x;
+        float y;
+        float z;
 
-        private void OnTriggerStay(Collider collisionobject)
+        float angle = 20f;
+
+        for (int i = 0; i < (segments + 1); i++)
+        {
+            x = Mathf.Sin(Mathf.Deg2Rad * angle) * sensoryRange;
+            y = Mathf.Cos(Mathf.Deg2Rad * angle) * sensoryRange;
+
+            line.SetPosition(i, new Vector3(x, y, 0));
+
+            angle += (360f / segments);
+        }
+    }
+    */
+
+    private void OnTriggerStay(Collider collisionobject)
     {
         //Debug.Log(collisionobject);
         if (collisionobject.tag == "Food")
