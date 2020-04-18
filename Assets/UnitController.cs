@@ -219,9 +219,16 @@ public class UnitController : MonoBehaviour
         targetDestination = new Vector3((Random.Range(-itemXSpread, itemXSpread)), (Random.Range(-itemYSpread, itemYSpread)), (Random.Range(-itemZSpread, itemZSpread)));
     }
 
+
+    //void Mutate()
+   // {
+    //    cellTrait;
+     //   float traitMin, traitMax,
+    //    childUnit.gameObject.GetComponent<UnitController>().cellTrait = Mathf.Clamp(cellTrait + (float)NextGaussianDouble() * speed * mutationRate, speedMin, speedMax);
+    //}
     void Reproduce()
     {
-        energy = energy * 0.5f;
+        energy = (energy - 5.0f) * 0.5f;
         reproductionChance = 0.0f;
         GameObject childUnit = Instantiate(gameObject,gameObject.transform.position,Quaternion.identity);
 
@@ -235,9 +242,45 @@ public class UnitController : MonoBehaviour
         //Increse it's Generation and then rename it to that generation
         childUnit.gameObject.GetComponent<UnitController>().generationCount += 1;
         childUnit.gameObject.name = ("Unit Generation " + childUnit.gameObject.GetComponent<UnitController>().generationCount);
+<<<<<<< Updated upstream
         childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * 0.05f;
         childUnit.gameObject.GetComponent<UnitController>().speed = speed + (float)NextGaussianDouble() * speed * 0.05f;
         
+=======
+
+        if(playerCell == false)
+        {
+            //Mutates the child if it's not a player cell
+            childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * mutationRate;
+            //Debug.Log("sensoryRange change " + (float)NextGaussianDouble() * sensoryRange * mutationRate);
+
+            childUnit.gameObject.GetComponent<UnitController>().speed = Mathf.Clamp(speed + (float)NextGaussianDouble() * speed * mutationRate, speedMin, speedMax);
+            //Debug.Log("speed change " + (float)NextGaussianDouble() * speed * mutationRate);
+                childUnit.gameObject.GetComponent<UnitController>().acceleration = childUnit.gameObject.GetComponent<UnitController>().speed;
+                childUnit.gameObject.GetComponent<UnitController>().turnSpeed = childUnit.gameObject.GetComponent<UnitController>().speed;
+
+            childUnit.gameObject.GetComponent<UnitController>().memoryLength = memoryLength + (float)NextGaussianDouble() * memoryLength * mutationRate;
+            //Debug.Log("memoryLength change " + (float)NextGaussianDouble() * memoryLength * mutationRate);
+
+            childUnit.gameObject.GetComponent<UnitController>().decisivness = decisivness + (float)NextGaussianDouble() * decisivness * mutationRate;
+            //Debug.Log("decisivness change " + (float)NextGaussianDouble() * decisivness * mutationRate);
+
+            reproductionTimer += Random.value; //offsets reproduction time for child so the species doesn't reproduce in descrete increments.
+        }
+        if (playerCell == true)
+        {
+            //add evolution points
+            GameController.gameObject.GetComponent<GameController>().playerEvolutionPoints = GameController.gameObject.GetComponent<GameController>().playerEvolutionPoints + GameController.gameObject.GetComponent<GameController>().pointsPerSplit;
+            GameController.gameObject.GetComponent<GameController>().evolutionPointsText.text = ""+GameController.gameObject.GetComponent<GameController>().playerEvolutionPoints;
+
+
+
+        }
+
+            //Make circle
+            //childUnit.gameObject.GetComponent<UnitController>().CreateCircle();
+
+>>>>>>> Stashed changes
 
 
 
