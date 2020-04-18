@@ -20,6 +20,8 @@ public class UnitController : MonoBehaviour
 
     [Range(0.0f, 25.0f)]
     public float memoryLength = 10.0f;
+    public float memoryLengthMin = 0.0f;
+    public float memoryLengthMax = 30.0f;
     float memoryLengthUsage;
     
     
@@ -55,16 +57,24 @@ public class UnitController : MonoBehaviour
 
     [Range(0.0f, 5.0f)]
     public float metabolicRate = 1.0f;
+
     public float mutationRate = 0.05f; //Mutation Rate
+    public float mutationRateMin = 0.00001f;
+    public float mutationRateMax = 1.0f;
 
-
-    public float movementEfficiency = 0.0001f;
+    public float movementEfficiency = 0.00003f;
 
     public float reproductionChance = 0.0f; //reproduction chance each frame
     public float reproductionCooldown = 2.0f;
     public float reproductionTimer;
+    public float reproductionRate = 100.0f;
+    public float reproductionRateMin = 50.0f;
+    public float reproductionRateMax = 150.0f;
 
-    public float decisivness = 1.0f; //the great this is, the more likely a cell is to go for further food
+    public float decisivness = 1.0f; //the greater this is, the more likely a cell is to go for further food
+    public float decisivnessmin = 0.0f;
+    public float decisivnessmax = 10.0f;
+
     public float distanceChoice = 0.0f; //more likely to go for nth food.
 
     public float lifespan = 30.0f;
@@ -132,7 +142,7 @@ public class UnitController : MonoBehaviour
         energy -= (Time.deltaTime * metabolicRate);
         distanceTraveled += Vector3.Distance(transform.position, lastPosition);
         lastPosition = transform.position;
-        energy -= distanceTraveled * movementEfficiency;
+        energy -= distanceTraveled * movementEfficiency * (speed / speedMax);
 
         //reproduction logic: Update reproduction chance and determine if cell will reproduce
 
@@ -154,7 +164,7 @@ public class UnitController : MonoBehaviour
         if (reproductionTimer >= reproductionCooldown)
         {
             reproductionTimer=0.0f;
-            reproductionChance += ((energy - 50) / 1000);
+            reproductionChance += ((energy - 50) / 1000) * (reproductionRate / 100.0f);
             reproductionChance = Mathf.Clamp(reproductionChance, 0.0f, 1.0f);
             if (Random.Range(0.0f, 1.0f) < reproductionChance)
             {
@@ -271,12 +281,10 @@ public class UnitController : MonoBehaviour
     }
 
 
-    //void Mutate()
-   // {
-    //    cellTrait;
-     //   float traitMin, traitMax,
-    //    childUnit.gameObject.GetComponent<UnitController>().cellTrait = Mathf.Clamp(cellTrait + (float)NextGaussianDouble() * speed * mutationRate, speedMin, speedMax);
-    //}
+    public static float Mutate(float cellTrait, float traitMin, float traitMax, float mutationRate)
+   {
+        return Mathf.Clamp(cellTrait + (float)NextGaussianDouble() * cellTrait * mutationRate, traitMin, traitMax);
+   }
     void Reproduce()
     {
 
@@ -300,20 +308,15 @@ public class UnitController : MonoBehaviour
         if(playerCell == false)
         {
             //Mutates the child if it's not a player cell
-            childUnit.gameObject.GetComponent<UnitController>().sensoryRange = sensoryRange + (float)NextGaussianDouble() * sensoryRange * mutationRate;
-            //Debug.Log("sensoryRange change " + (float)NextGaussianDouble() * sensoryRange * mutationRate);
-
-            childUnit.gameObject.GetComponent<UnitController>().speed = Mathf.Clamp(speed + (float)NextGaussianDouble() * speed * mutationRate, speedMin, speedMax);
-            //Debug.Log("speed change " + (float)NextGaussianDouble() * speed * mutationRate);
+            childUnit.gameObject.GetComponent<UnitController>().speed = Mutate(speed, speedMin, speedMax, mutationRate);
                 childUnit.gameObject.GetComponent<UnitController>().acceleration = childUnit.gameObject.GetComponent<UnitController>().speed;
                 childUnit.gameObject.GetComponent<UnitController>().turnSpeed = childUnit.gameObject.GetComponent<UnitController>().speed;
 
-            childUnit.gameObject.GetComponent<UnitController>().memoryLength = memoryLength + (float)NextGaussianDouble() * memoryLength * mutationRate;
-            //Debug.Log("memoryLength change " + (float)NextGaussianDouble() * memoryLength * mutationRate);
-
-            childUnit.gameObject.GetComponent<UnitController>().decisivness = decisivness + (float)NextGaussianDouble() * decisivness * mutationRate;
-            //Debug.Log("decisivness change " + (float)NextGaussianDouble() * decisivness * mutationRate);
-
+            childUnit.gameObject.GetComponent<UnitController>().memoryLength = Mutate(memoryLength, memoryLengthMin, memoryLengthMax, mutationRate);
+            childUnit.gameObject.GetComponent<UnitController>().sensoryRange = Mutate(sensoryRange, sensoryRangeMin, sensoryRangeMax, mutationRate);
+            childUnit.gameObject.GetComponent<UnitController>().decisivness = Mutate(decisivness, decisivnessmin, decisivnessmax, mutationRate);
+            //childUnit.gameObject.GetComponent<UnitController>().mutationRate = Mutate(mutationRate, mutationRateMin, mutationRateMax, mutationRate);  //allows variable mutation rate
+            childUnit.gameObject.GetComponent<UnitController>().reproductionRate = Mutate(reproductionRate, reproductionRateMin, reproductionRateMax, mutationRate);
             reproductionTimer += Random.value; //offsets reproduction time for child so the species doesn't reproduce in descrete increments.
         }
         if (playerCell == true)
