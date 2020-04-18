@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -219,6 +220,10 @@ public class GameController : MonoBehaviour
 
     }
     
+    public void reloadGame()
+    {
+        SceneManager.LoadScene(0);
+    }
 
     public void ToggleMenu()
     {
