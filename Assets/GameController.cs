@@ -54,6 +54,9 @@ public class GameController : MonoBehaviour
     public float timer = 3.0f;
     float timerTicker;
 
+    public TextMeshProUGUI speedAvergeText;
+    public TextMeshProUGUI speedGenerationText;
+
 
     // Start is called before the first frame update
     void Start()
@@ -100,14 +103,40 @@ public class GameController : MonoBehaviour
         GeneticsMenu.SetActive(isMenuActive);
         GameUnits.SetActive(!isMenuActive);
 
+
+        int generationCount = 0;
+        int speciesCount = 0;
+
+        float generationValue = 0f;
+        float speciesValue = 0f;
+        
         foreach (Transform child in SpeciesAParent.transform)
         {
+            speciesCount++;
+            speciesValue += child.gameObject.GetComponent<UnitController>().speed;
+
+            if (child.gameObject.GetComponent<UnitController>().generationCount >= SpeciesAGenerationCount)
+            {
+                generationCount++;
+                generationValue += child.gameObject.GetComponent<UnitController>().speed;
+            }
 
             if (child.gameObject.GetComponent<UnitController>().generationCount > SpeciesAGenerationCount)
             {
+
                 SpeciesAGenerationCount = child.gameObject.GetComponent<UnitController>().generationCount;
             }
+
+
         }
+        //total across species
+
+        float averageSpeed = (speciesValue / speciesCount);
+        averageSpeed = Mathf.Round(averageSpeed * 10f) / 10f;
+        speedAvergeText.text = "Average Speed: " + System.String.Format("Value: {0:F1}", averageSpeed);
+
+        //generation value
+        speedGenerationText.text = "Generation " + SpeciesAGenerationCount  + " Speed:" + (generationValue / generationCount);
 
         foreach (Transform child in SpeciesBParent.transform)
         {
@@ -175,6 +204,7 @@ public class GameController : MonoBehaviour
                 {
                     child.gameObject.GetComponent<UnitController>().speed += 1;
                 }
+                child.gameObject.GetComponent<UnitController>().updateColor();
             }
         }
 
@@ -188,8 +218,10 @@ public class GameController : MonoBehaviour
                 {
                     child.gameObject.GetComponent<UnitController>().speed -= 1;
                 }
+                child.gameObject.GetComponent<UnitController>().updateColor();
             }
         }
+        
     }
 
 

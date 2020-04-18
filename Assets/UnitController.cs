@@ -97,8 +97,7 @@ public class UnitController : MonoBehaviour
         lastPosition = transform.position;
         rend = GetComponent<Renderer>();
 
-        unitColor = new Color((speed / 25), (sensoryRange / 50), (memoryLength / 100), 1.0f);
-        rend.material.SetColor("_Color", unitColor);
+        updateColor();
 
         actionList.Add(Hunt);
         actionList.Add(Wander);
@@ -316,10 +315,14 @@ public class UnitController : MonoBehaviour
 
 
         //Get Colored based on new values
+        updateColor();
+
+    }
+    public void updateColor()
+    {
         unitColor = new Color((speed / 25), (sensoryRange / 50), (memoryLength / 100), 1.0f);
         rend.material.SetColor("_Color", unitColor);
     }
-
     public static double NextGaussianDouble()
     {
         double u, v, S;
