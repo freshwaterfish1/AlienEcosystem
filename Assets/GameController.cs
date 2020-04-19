@@ -69,7 +69,7 @@ public class GameController : MonoBehaviour
     public float playerEvolutionPoints = 0;
 
     [Range(0.0f, 1.0f)]
-    public float pointsPerSplit = .2f;
+    public float pointsPerSplit;
 
     // Start is called before the first frame update
     void Start()
@@ -80,7 +80,6 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        playerEvolutionPoints = Mathf.Round(playerEvolutionPoints * 100f) / 100f;
         SpeciesAText.text = "Number Alive: " + SpeciesAParent.transform.childCount;
         SpeciesBText.text = "Number Alive: " + SpeciesBParent.transform.childCount;
         SpeciesCText.text = "Number Alive: " + SpeciesCParent.transform.childCount;
@@ -109,7 +108,8 @@ public class GameController : MonoBehaviour
         
         float AsenserangeGenerationValue = 0f;
         float AsenserangeSpeciesValue = 0f;
-        
+
+        pointsPerSplit = Mathf.Pow(0.3f, 0.1f * SpeciesAParent.transform.childCount);
 
 
 
@@ -269,7 +269,7 @@ public class GameController : MonoBehaviour
 
     public void updatePlayerEvoPoints()
     {
-        playerEvolutionPoints--;
+        playerEvolutionPoints-=1.0f;
         evolutionPointsText.text = (System.String.Format("{0:F1}", playerEvolutionPoints));
     }
     //Player Forced Mutation
@@ -281,11 +281,10 @@ public class GameController : MonoBehaviour
             foreach (Transform child in SpeciesAParent.transform)
             {
 
-                if (child.gameObject.GetComponent<UnitController>().generationCount >= SpeciesAGenerationCount)
-                {
-                    child.gameObject.GetComponent<UnitController>().speed += 1;
-                    updatePlayerEvoPoints();
-                }
+
+                child.gameObject.GetComponent<UnitController>().speed += 1;
+                updatePlayerEvoPoints();
+                
                 child.gameObject.GetComponent<UnitController>().updateColor();
             }
             
@@ -297,15 +296,14 @@ public class GameController : MonoBehaviour
             foreach (Transform child in SpeciesAParent.transform)
             {
 
-                if (child.gameObject.GetComponent<UnitController>().generationCount >= SpeciesAGenerationCount)
-                {
+
                     if (child.gameObject.GetComponent<UnitController>().speed > 1)
                     {
                         child.gameObject.GetComponent<UnitController>().speed -= 1;
                         updatePlayerEvoPoints();
                     }
  
-                }
+                
                 child.gameObject.GetComponent<UnitController>().updateColor();
             }
         }
@@ -320,12 +318,11 @@ public class GameController : MonoBehaviour
             foreach (Transform child in SpeciesAParent.transform)
             {
 
-                if (child.gameObject.GetComponent<UnitController>().generationCount >= SpeciesAGenerationCount)
-                {
+
                     child.gameObject.GetComponent<UnitController>().memoryLength += .1f;
                     child.gameObject.GetComponent<UnitController>().memoryLength = Mathf.Round(child.gameObject.GetComponent<UnitController>().memoryLength * 10f) / 10f;
                     updatePlayerEvoPoints();
-                }
+                
                 child.gameObject.GetComponent<UnitController>().updateColor();
             }
             
@@ -337,8 +334,7 @@ public class GameController : MonoBehaviour
             foreach (Transform child in SpeciesAParent.transform)
             {
 
-                if (child.gameObject.GetComponent<UnitController>().generationCount >= SpeciesAGenerationCount)
-                {
+
                     if(child.gameObject.GetComponent<UnitController>().memoryLength > .1f)
                     {
                         child.gameObject.GetComponent<UnitController>().memoryLength -= .1f;
@@ -346,7 +342,7 @@ public class GameController : MonoBehaviour
                         updatePlayerEvoPoints();
                     }
                     
-                }
+                
                 child.gameObject.GetComponent<UnitController>().updateColor();
             }
 
@@ -362,11 +358,10 @@ public class GameController : MonoBehaviour
             foreach (Transform child in SpeciesAParent.transform)
             {
 
-                if (child.gameObject.GetComponent<UnitController>().generationCount >= SpeciesAGenerationCount)
-                {
+
                     child.gameObject.GetComponent<UnitController>().sensoryRange += 1;
                     updatePlayerEvoPoints();
-                }
+                
                 child.gameObject.GetComponent<UnitController>().updateColor();
             }
             
@@ -378,15 +373,14 @@ public class GameController : MonoBehaviour
             foreach (Transform child in SpeciesAParent.transform)
             {
 
-                if (child.gameObject.GetComponent<UnitController>().generationCount >= SpeciesAGenerationCount)
-                {
+
                     if (child.gameObject.GetComponent<UnitController>().sensoryRange > 1)
                     {
                         child.gameObject.GetComponent<UnitController>().sensoryRange -= 1;
                         updatePlayerEvoPoints();
                     }
                         
-                }
+                
                 child.gameObject.GetComponent<UnitController>().updateColor();
             }
             

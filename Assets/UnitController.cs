@@ -58,7 +58,7 @@ public class UnitController : MonoBehaviour
     [Range(0.0f, 5.0f)]
     public float metabolicRate = 1.0f;
 
-    public float mutationRate = 0.05f; //Mutation Rate
+    public float mutationRate = 0.2f; //Mutation Rate
     public float mutationRateMin = 0.00001f;
     public float mutationRateMax = 1.0f;
 
