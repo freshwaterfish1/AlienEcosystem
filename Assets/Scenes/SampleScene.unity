@@ -852,7 +852,7 @@ PrefabInstance:
     - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
         type: 3}
       propertyPath: mutationRate
-      value: 0.1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
         type: 3}
@@ -3517,6 +3517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b9dea4c97d1914c8cdfb64cee3deae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< Updated upstream
   itemToSpawn:
   - {fileID: 7025037492321535545, guid: bc4e7c23c9236a543be43b59fcd9da88, type: 3}
   foodParent: {fileID: 2128321002}
@@ -3526,6 +3527,47 @@ MonoBehaviour:
   numbItemsToSpawn: 25
   timer: 1
 --- !u!1 &1898750614
+=======
+  GeneticsMenu: {fileID: 1901596955}
+  WinScreen: {fileID: 758205198}
+  LossScreen: {fileID: 565387402}
+  GameUnits: {fileID: 1698685247}
+  winOrLossOccored: 0
+  isMenuActive: 0
+  SpeciesAText: {fileID: 798545552}
+  SpeciesAGeneration: {fileID: 161387980}
+  SpeciesAParent: {fileID: 871667118}
+  SpeciesAGenerationCount: 0
+  SpeciesBText: {fileID: 1281113056}
+  SpeciesBGeneration: {fileID: 1893983380}
+  SpeciesBParent: {fileID: 843052639}
+  SpeciesBGenerationCount: 0
+  SpeciesCText: {fileID: 1743921029}
+  SpeciesCGeneration: {fileID: 1033971292}
+  SpeciesCParent: {fileID: 640277877}
+  SpeciesCGenerationCount: 0
+  simulationTimer: {fileID: 1698685247}
+  simulationTime: {fileID: 1153404775}
+  AspeedAvergeText: {fileID: 802815026}
+  AspeedGenerationText: {fileID: 1014861102}
+  AmemoryAvergeText: {fileID: 1926673253}
+  AmemoryGenerationText: {fileID: 963639856}
+  AsenserangeAvergeText: {fileID: 1421087289}
+  AsenserangeGenerationText: {fileID: 645365867}
+  BspeedAvergeText: {fileID: 353514707}
+  BmemoryAvergeText: {fileID: 272631297}
+  BsenserangeAvergeText: {fileID: 1993287681}
+  evolutionPointsText: {fileID: 1500405713}
+  playerEvolutionPoints: 1
+  pointsPerSplit: 0.05
+--- !u!4 &2035898369 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3872487186853351893, guid: 2e55b0040cd65f84ea5b6c5f0f030aa8,
+    type: 3}
+  m_PrefabInstance: {fileID: 473203792}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2048343934
+>>>>>>> Stashed changes
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
