@@ -1910,7 +1910,7 @@ PrefabInstance:
     - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
         type: 3}
       propertyPath: mutationRate
-      value: 0.1
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 2597662600051922322, guid: e95df13099b8cf44ea087b4553219424,
         type: 3}
