@@ -33,7 +33,10 @@ public class autoFoodSpawn : MonoBehaviour
         if (timerTicker <= 0)
         {
             timerTicker = timer;
-            SpreadItem();
+            for (int i = 0; i < numbItemsToSpawn; i++)
+            {
+                SpreadItem();
+            }
 
         }
         else

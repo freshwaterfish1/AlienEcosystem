@@ -8,6 +8,8 @@ public class foodSpawner : MonoBehaviour
     public GameObject foodParent;
     public float spawnRatehMin = 1.0f;
     public float spawnRatehMax = 5.0f;
+    public float lifespan;
+    public float lifespanTimer;
      float memoryLength;
      float memoryLengthUsage;
      float spawnRadius = 1.5f;
@@ -15,11 +17,18 @@ public class foodSpawner : MonoBehaviour
     void Start()
     {
         memoryLength = Random.Range(spawnRatehMin, spawnRatehMax);
+        foodParent = GameObject.Find("FoodParent");
+        lifespan = Random.Range(10.0f, 60.0f);
     }
 
     // Update is called once per frame
     void Update()
     {
+        lifespanTimer += Time.deltaTime;
+        if(lifespanTimer>= lifespan)
+        {
+            Destroy(gameObject);
+        }
         if (memoryLengthUsage <= 0)
         {
             memoryLengthUsage = memoryLength;
