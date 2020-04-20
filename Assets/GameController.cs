@@ -68,6 +68,7 @@ public class GameController : MonoBehaviour
 
     public float playerEvolutionPoints = 0;
 
+
     [Range(0.0f, 1.0f)]
     public float pointsPerSplit;
 
@@ -80,6 +81,10 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
+
+
         SpeciesAText.text = "Number Alive: " + SpeciesAParent.transform.childCount;
         SpeciesBText.text = "Number Alive: " + SpeciesBParent.transform.childCount;
         SpeciesCText.text = "Number Alive: " + SpeciesCParent.transform.childCount;
@@ -109,7 +114,7 @@ public class GameController : MonoBehaviour
         float AsenserangeGenerationValue = 0f;
         float AsenserangeSpeciesValue = 0f;
 
-        pointsPerSplit = Mathf.Pow(0.3f, 0.1f * SpeciesAParent.transform.childCount);
+        pointsPerSplit = (Mathf.Pow(0.1f, 0.025f * SpeciesAParent.transform.childCount)*.5f);
 
 
 
